@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>The Golden Hills</title>
+<style>
+body {
+  background-color: #000;
+}
+canvas {
+  width: 400px;
+  height: 300px;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// The player object
+var player = {
+  x: 100,
+  y: 100,
+  width: 50,
+  height: 50,
+  speed: 5
+};
+
+// The UI
+var ui = {
+  health: 100,
+  mana: 50,
+  attack: 10,
+  defense: 5
+};
+
+// The zones
+var zones = [
+  {
+    name: "The Golden Hills",
+    description: "This is the starting zone, where the player first finds themselves trapped. It is a beautiful and peaceful place, but it is also dangerous, as the Grim Reaper and his minions are constantly patrolling the area.",
+    x: 0,
+    y: 0,
+    width: 400,
+    height: 300
+  },
+  {
+    name: "The Reapers Domain",
+    description: "This is the Grim Reaper's home, a dark and foreboding place where the souls of the dead are said to be collected. The player will need to be very careful if they venture into this zone, as Grim Reaper himself is a formidable foe.",
+    x: 400,
+    y: 0,
+    width: 400,
+    height: 300
+  },
+  {
+    name: "The Berainian Wildes",
+    description: "This is a vast and dangerous forest, home to a variety of creatures, both friendly and hostile. The player will need to use all of their skills to survive in this zone, as there are many dangers lurking in the shadows.",
+    x: 0,
+    y: 300,
+    width: 400,
+    height: 300
+  },
+  {
+    name: "The Reddrop Forest",
+    description: "This is a forest that is said to be cursed. The trees are all blood red, and the air is thick with the scent of death. The player will need to be very careful if they venture into this zone, as they may not make it out alive.",
+    x: 400,
+    y: 300,
+    width: 400,
+    height: 300
+  },
+  {
+    name: "The Void",
+    description: "This is a mysterious and unknowable zone. It is said to be the place where all things end, and it is not a place for the faint of heart. The player will need to be very careful if they venture into this zone, as they may not come back.",
+    x: 800,
+    y: 0,
+    width: 400,
+    height: 300
+  }
+];
+
+// The entities
+var entities = [
+  {
+    name: "Grim Reaper",
+    x: 400,
+    y: 100,
+    width: 50,
+    height: 50,
+    health: 1000,
+    attack: 20,
+    defense: 10
+  },
+  {
+    name: "Tree",
+    x: 100,
+    y: 100,
+    width: 50,
+    height: 50,
+    health: 50,
+    attack: 0,
+    defense: 0
+  }
+];
+
+// The game loop
+function loop() {
+  // Update the player's position
+  player.x += player.speed;
+
+  // Check for collisions with enemies
+  for (var i = 0; i < entities.length; i++) {
+    if (collide(player, entities[i])) {
+      // The player died
+      console.log("You died!");
+      break
