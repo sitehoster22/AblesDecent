@@ -1,0 +1,10 @@
+#game-canvas {
+    border: 1px solid black;
+}
+
+#health-bar {
+    width: 200px;
+    height: 20px;
+    background-color: red;
+    margin: 10px;
+}
