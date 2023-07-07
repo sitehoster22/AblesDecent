@@ -110,7 +110,10 @@ function gameLoop() {
 
     // Render health bar
     const healthBar = document.getElementById('health-bar');
-    healthBar.style.width = (health / maxHealth) * 100 + '%';
+    const healthText = document.createElement('span');
+    healthText.textContent = `Health: ${health}`;
+    healthBar.innerHTML = '';
+    healthBar.appendChild(healthText);
 
     // Request next frame
     requestAnimationFrame(gameLoop);
@@ -118,7 +121,22 @@ function gameLoop() {
 
 // Function to handle player movement
 function handlePlayerMovement() {
-    // Add code here to handle player movement based on user input
+    document.addEventListener('keydown', (event) => {
+        switch (event.key) {
+            case 'w':
+                player.y -= 5;
+                break;
+            case 'a':
+                player.x -= 5;
+                break;
+            case 's':
+                player.y += 5;
+                break;
+            case 'd':
+                player.x += 5;
+                break;
+        }
+    });
 }
 
 // Function to handle player interactions
