@@ -1,13 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>The Golden Hills - Game</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>My Game</title>
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #game-container {
+      width: 800px;
+      height: 600px;
+      margin: 0 auto;
+      background-color: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #player {
+      width: 50px;
+      height: 50px;
+      background-image: url("player.png");
+      background-size: cover;
+      position: absolute;
+      top: 275px;
+      left: 375px;
+    }
+
+    #health-bar {
+      width: 200px;
+      height: 20px;
+      background-color: #f00;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    .world {
+      width: 800px;
+      height: 600px;
+      position: absolute;
+      background-size: cover;
+    }
+
+    #reapers-domain {
+      background-image: url("reapers-domain-background.jpg");
+      left: 0;
+      top: 0;
+    }
+
+    #berainian-wildes {
+      background-image: url("berainian-wildes-background.jpg");
+      left: 500px;
+      top: 0;
+    }
+
+    #reddrop-forest {
+      background-image: url("reddrop-forest-background.jpg");
+      left: 1000px;
+      top: 0;
+    }
+  </style>
 </head>
 <body>
-    <canvas id="game-canvas"></canvas>
+  <div id="game-container">
     <div id="health-bar"></div>
+    <div id="player"></div>
+    <div id="reapers-domain" class="world">
+      <!-- Objects and enemies for Reaper's Domain -->
+    </div>
+    <div id="berainian-wildes" class="world">
+      <!-- Objects and enemies for Berainian Wildes -->
+    </div>
+    <div id="reddrop-forest" class="world">
+      <!-- Objects and enemies for Reddrop Forest -->
+    </div>
+  </div>
 
-    <script src="game.js"></script>
+  <script>
+    // JavaScript logic for player movement using WASD controls
+    var player = document.getElementById("player");
+    var healthBar = document.getElementById("health-bar");
+    var health = 100;
+    var reaper = {
+      damage: 20,
+      health: 100
+    };
+    var currentWorld = "reapers-domain";
+
+    document.addEventListener("keydown", function(event) {
+      var left = parseInt(player.style.left) || 0;
+      var top = parseInt(player.style.top) || 0;
+      var step = 10;
+
+      switch (event.keyCode) {
+        case 87: // W
+          player.style.top = (top - step) + "px";
+          break;
+        case 83: // S
+          player.style.top = (top + step) + "px";
+          break;
+        case 65: // A
+          player.style.left = (left - step) + "px";
+          break;
+        case 68: // D
+          player.style.left = (left + step) + "px";
+          break;
+        case 32: // Spacebar (Attack)
+          attack();
+          break;
+      }
+    });
+
+    function attack() {
+      // Player attack
+      var playerDamage = 5;
+      reaper.health -= playerDamage;
+      console.log("Player attacked! Reaper's health: " + reaper.health);
+
+      // Reaper attack
+      if (reaper.health > 0) {
+        var reaperDamage = reaper.damage;
+        health -= reaperDamage;
+        console.log("Reaper attacked! Player's health: " + health);
+      }
+
+      updateHealthBar();
+
+      // Check if the player or the Reaper is defeated
+      if (health <= 0) {
+        gameOver();
+      } else if (reaper.health <= 0) {
+        defeatReaper();
+      }
+    }
+
+    function updateHealthBar() {
+      healthBar.style.width = health + "%";
+    }
+
+    function gameOver() {
+      console.log("Game over! The player has been defeated.");
+      // Additional game over logic can be implemented here
+    }
+
+    function defeatReaper() {
+      console.log("Congratulations! The player has defeated the Reaper.");
+      // Additional victory logic can be implemented here
+
+      // Move to the next world
+      switch (currentWorld) {
+        case "reapers-domain":
+          currentWorld = "berainian-wildes";
+          player.style.left = "500px";
+          break;
+        case "berainian-wildes":
+          currentWorld = "reddrop-forest";
+          player.style.left = "1000px";
+          break;
+        case "reddrop-forest":
+          // Final victory condition or game completion logic can be implemented here
+          break;
+      }
+    }
+
+    updateHealthBar(); // Initialize health bar
+  </script>
 </body>
 </html>
